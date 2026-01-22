@@ -5,10 +5,10 @@ import { HttpError } from 'http-errors'
 const app = express()
 
 app.get('/', (req, res) => {
-    res.send('Welcome')
+    res.send('Welcome to catalog service')
 })
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
     logger.error(err.message)
     const statusCode = err.statusCode || 500
