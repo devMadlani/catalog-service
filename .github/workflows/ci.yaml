@@ -10,8 +10,8 @@ jobs:
     build-and-test:
         name: Build the project
         runs-on: ubuntu-latest
-        env:
-            # DB_HOST: ${{ secrets.TEST_DB_HOST }}
+        # env:
+        # DB_HOST: ${{ secrets.TEST_DB_HOST }}
 
         # if: github.event_name == 'pull_request'
         steps:
