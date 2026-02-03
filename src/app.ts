@@ -8,7 +8,6 @@ app.get('/', (req, res) => {
     res.send('Welcome to catalog service')
 })
 
- 
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
     logger.error(err.message)
     const statusCode = err.statusCode || 500
