@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express'
 import cookieParser from 'cookie-parser'
 import categoryRoute from './category/category-router'
-import { globalErrorHandler } from './common/middleware/globalErrorHandler'
+import { globalErrorHandler } from './common/middlewares/globalErrorHandler'
 const app = express()
 
 app.use(express.json())
