@@ -7,7 +7,7 @@ export const globalErrorHandler = (
     err: HttpError,
     req: Request,
     res: Response,
-     
+
     next: NextFunction,
 ) => {
     const errorId = uuidv4()
