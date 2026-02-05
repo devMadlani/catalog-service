@@ -1,18 +1,31 @@
 import { NextFunction, Response } from 'express'
 import { Request } from 'express-jwt'
+import { v4 as uuidv4 } from 'uuid'
 import { validationResult } from 'express-validator'
 import createHttpError from 'http-errors'
 import { ProductService } from './product-service'
 import { Product } from './product-types'
+import { FileStorage } from '../common/types/storage'
+import { UploadedFile } from 'express-fileupload'
 
 export class ProductController {
-    constructor(private productService: ProductService) {}
+    constructor(
+        private productService: ProductService,
+        private storage: FileStorage,
+    ) {}
     create = async (req: Request, res: Response, next: NextFunction) => {
         const result = validationResult(req)
 
         if (!result.isEmpty()) {
             return next(createHttpError(400, result.array()[0].msg as string))
         }
+        const imageName = uuidv4()
+        const image = req.files!.image as UploadedFile
+
+        await this.storage.upload({
+            fileName: imageName,
+            fileData: image.data,
+        })
 
         const {
             name,
@@ -23,6 +36,7 @@ export class ProductController {
             categoryId,
             isPublish,
         } = req.body
+
         const product = {
             name,
             description,
@@ -31,6 +45,7 @@ export class ProductController {
             tenantId,
             categoryId,
             isPublish,
+            image: imageName,
         }
 
         const newProduct = await this.productService.createProduct(
