@@ -9,11 +9,11 @@ export default [
 
     body('priceConfiguration')
         .exists()
-        .withMessage('Pricec configuration is required'),
+        .withMessage('Price configuration is required'),
 
-    body('priceConfiguration*priceType')
+    body('priceConfiguration.*.priceType')
         .exists()
-        .withMessage('Pricec type is required')
+        .withMessage('Price type is required')
         .custom((value: 'base' | 'additional') => {
             const validKeys = ['base', 'additional']
             if (!validKeys.includes(value)) {

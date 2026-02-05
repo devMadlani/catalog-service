@@ -21,7 +21,7 @@ const attributeScema = new mongoose.Schema<Attribute>({
     widgetType: {
         type: String,
         required: true,
-        enum: ['swtich', 'radio'],
+        enum: ['switch', 'radio'],
     },
     defaultValue: {
         type: mongoose.Schema.Types.Mixed,
