@@ -5,9 +5,10 @@ export class ProductService {
     async createProduct(product: Product) {
         return await productModel.create(product)
     }
-    async getProductImage(productId: string) {
+
+    async getProductById(productId: string) {
         const product = await productModel.findById(productId)
-        return product?.image
+        return product
     }
 
     async updateProduct(productId: string, product: Product) {
