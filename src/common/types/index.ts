@@ -19,3 +19,8 @@ export interface Filter {
     categoryId?: mongoose.Types.ObjectId
     isPublish?: boolean
 }
+
+export interface PaginateQuery {
+    page: number
+    limit: number
+}

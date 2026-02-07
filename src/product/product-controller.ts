@@ -98,7 +98,7 @@ export class ProductController {
                 fileData: image.data,
             })
 
-            await this.storage.delete(oldImage)
+            await this.storage.delete(oldImage as string)
         }
 
         const {
@@ -148,6 +148,12 @@ export class ProductController {
         const prodcuts = await this.productService.getProducts(
             q as string,
             filters,
+            {
+                page: req.query.page ? parseInt(req.query.page as string) : 1,
+                limit: req.query.limit
+                    ? parseInt(req.query.limit as string)
+                    : 10,
+            },
         )
         res.json(prodcuts)
     }

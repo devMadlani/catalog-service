@@ -1,4 +1,5 @@
-import { Filter } from '../common/types'
+import { Filter, PaginateQuery } from '../common/types'
+import { paginationLabels } from '../config/pagination'
 import productModel from './product-model'
 import { Product } from './product-types'
 
@@ -22,7 +23,11 @@ export class ProductService {
             },
         )
     }
-    async getProducts(q: string, filters: Filter) {
+    async getProducts(
+        q: string,
+        filters: Filter,
+        paginateQuery: PaginateQuery,
+    ) {
         const serachQueryRegexp = new RegExp(q, 'i')
 
         const matchQuery = { ...filters, name: serachQueryRegexp }
@@ -53,8 +58,13 @@ export class ProductService {
             },
         ])
 
-        const result = await aggregate.exec()
+        return productModel.aggregatePaginate(aggregate, {
+            ...paginateQuery,
+            customLabels: paginationLabels,
+        })
 
-        return result as Product[]
+        // const result = await aggregate.exec()
+
+        // return result as Product[]
     }
 }
