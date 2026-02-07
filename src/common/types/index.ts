@@ -1,4 +1,5 @@
 import { Request } from 'express'
+import mongoose from 'mongoose'
 
 export type AuthCookie = {
     accessToken: string
@@ -11,4 +12,10 @@ export interface AuthRequest extends Request {
         id?: string
         tenant: string
     }
+}
+
+export interface Filter {
+    tenantId?: string
+    categoryId?: mongoose.Types.ObjectId
+    isPublish?: boolean
 }
