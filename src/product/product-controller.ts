@@ -155,6 +155,18 @@ export class ProductController {
                     : 10,
             },
         )
-        res.json(prodcuts)
+
+        const finalProducts = (prodcuts.data as Product[]).map(
+            (product: Product) => ({
+                ...product,
+                image: this.storage.getObjectUrl(product.image),
+            }),
+        )
+        res.json({
+            data: finalProducts,
+            total: prodcuts.total,
+            pageSize: prodcuts.pageSize,
+            currentPage: prodcuts.currentPage,
+        })
     }
 }
