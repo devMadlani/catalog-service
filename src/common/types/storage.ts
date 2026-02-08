@@ -6,5 +6,5 @@ export interface FileData {
 export interface FileStorage {
     upload(data: FileData): Promise<void>
     delete(filename: string): Promise<void>
-    getObjectUrl(filename: string): string
+    getObjectUri(filename: string): string
 }

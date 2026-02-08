@@ -11,6 +11,7 @@ export class CategoryController {
         private logger: Logger,
     ) {
         this.create = this.create.bind(this)
+        this.update = this.update.bind(this)
         this.index = this.index.bind(this)
         this.getOne = this.getOne.bind(this)
         this.delete = this.delete.bind(this)
@@ -34,6 +35,26 @@ export class CategoryController {
         this.logger.info('Category created successfully ', { id: category._id })
 
         res.json({ id: category._id })
+    }
+
+    async update(req: Request, res: Response, next: NextFunction) {
+        const result = validationResult(req)
+
+        if (!result.isEmpty()) {
+            return next(createHttpError(400, result.array()[0].msg as string))
+        }
+
+        const { name, priceConfiguration, attributes } = req.body as Category
+        const { categoryId } = req.params
+        await this.categoryService.update(categoryId, {
+            name,
+            priceConfiguration,
+            attributes,
+        })
+
+        this.logger.info('Category created successfully ', { id: categoryId })
+
+        res.json({ id: categoryId })
     }
 
     async index(req: Request, res: Response) {

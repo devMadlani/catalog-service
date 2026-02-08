@@ -164,7 +164,7 @@ export class ProductController {
         const finalProducts = (prodcuts.data as Product[]).map(
             (product: Product) => ({
                 ...product,
-                image: this.storage.getObjectUrl(product.image),
+                image: this.storage.getObjectUri(product.image),
             }),
         )
 
@@ -185,15 +185,23 @@ export class ProductController {
         if (!product) {
             return next(createHttpError(404, 'Product not found'))
         }
+        const finalProduct = {
+            ...product,
+            image: this.storage.getObjectUri(product.image),
+        }
         this.logger.info('Product fetched successfully', { id: productId })
-        res.json(product)
+        res.json(finalProduct)
     }
 
     deleteProduct = async (req: Request, res: Response, next: NextFunction) => {
         const { productId } = req.params
-        await this.productService.delete(productId)
-        this.logger.info('Product deleted successfully', { id: productId })
+        const deletedProduct = await this.productService.delete(productId)
 
+        if (deletedProduct) {
+            await this.storage.delete(deletedProduct?.image)
+        }
+
+        this.logger.info('Product deleted successfully', { id: productId })
         res.json({ id: productId })
     }
 }

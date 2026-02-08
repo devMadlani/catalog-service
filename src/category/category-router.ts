@@ -21,6 +21,13 @@ router.post(
     asyncWrapper(categoryController.create),
 )
 
+router.put(
+    '/:categoryId',
+    authenticate,
+    canAccess([Roles.ADMIN]),
+    categoryValidator,
+    asyncWrapper(categoryController.update),
+)
 router.get('/', asyncWrapper(categoryController.index))
 router.get('/:categoryId', asyncWrapper(categoryController.getOne))
 

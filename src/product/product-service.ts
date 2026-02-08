@@ -8,8 +8,7 @@ export class ProductService {
         return await productModel.create(product)
     }
     async getProductById(productId: string) {
-        const product = await productModel.findById(productId)
-        return product
+        return await productModel.findById(productId).lean()
     }
 
     async updateProduct(productId: string, product: Product) {

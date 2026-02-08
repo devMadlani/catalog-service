@@ -41,7 +41,7 @@ export class S3Storage implements FileStorage {
         return await this.client.send(new DeleteObjectCommand(objectParams))
     }
 
-    getObjectUrl(filename: string): string {
+    getObjectUri(filename: string): string {
         const bucket = config.get('s3.bucket')
         const region = config.get('s3.region')
         if (typeof bucket == 'string' && typeof region == 'string')
