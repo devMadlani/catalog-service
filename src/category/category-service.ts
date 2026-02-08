@@ -10,4 +10,12 @@ export class CategoryService {
     async getAll() {
         return await CategoryModel.find()
     }
+
+    async getById(categoryId: string) {
+        return await CategoryModel.findById(categoryId)
+    }
+
+    async delete(categoryId: string) {
+        return await CategoryModel.findByIdAndDelete(categoryId)
+    }
 }

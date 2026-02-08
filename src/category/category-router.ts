@@ -22,5 +22,8 @@ router.post(
 )
 
 router.get('/', asyncWrapper(categoryController.index))
+router.get('/:categoryId', asyncWrapper(categoryController.getOne))
+
+router.delete('/:categoryId', asyncWrapper(categoryController.delete))
 
 export default router

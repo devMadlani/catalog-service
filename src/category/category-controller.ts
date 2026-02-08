@@ -12,6 +12,8 @@ export class CategoryController {
     ) {
         this.create = this.create.bind(this)
         this.index = this.index.bind(this)
+        this.getOne = this.getOne.bind(this)
+        this.delete = this.delete.bind(this)
     }
 
     async create(req: Request, res: Response, next: NextFunction) {
@@ -29,7 +31,7 @@ export class CategoryController {
             attributes,
         })
 
-        this.logger.info('Created Category', { id: category._id })
+        this.logger.info('Category created successfully ', { id: category._id })
 
         res.json({ id: category._id })
     }
@@ -38,5 +40,25 @@ export class CategoryController {
         const categories = await this.categoryService.getAll()
         this.logger.info(`Getting categories list`)
         res.json(categories)
+    }
+
+    async getOne(req: Request, res: Response, next: NextFunction) {
+        const categoryId = req.params.categoryId
+        const category = await this.categoryService.getById(categoryId)
+        if (!category) {
+            next(createHttpError(404, 'Category not found'))
+        }
+        this.logger.info('Category fetched successfully', { id: categoryId })
+        res.json(category)
+    }
+
+    async delete(req: Request, res: Response, next: NextFunction) {
+        const categoryId = req.params.categoryId
+        await this.categoryService.delete(categoryId)
+        this.logger.info('Cateogry deleted successfully', {
+            id: categoryId,
+        })
+
+        res.json({ id: categoryId })
     }
 }

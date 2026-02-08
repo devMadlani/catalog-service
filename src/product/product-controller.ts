@@ -10,11 +10,13 @@ import { UploadedFile } from 'express-fileupload'
 import { AuthRequest, Filter } from '../common/types'
 import { Roles } from '../common/constants'
 import mongoose from 'mongoose'
+import { Logger } from 'winston'
 
 export class ProductController {
     constructor(
         private productService: ProductService,
         private storage: FileStorage,
+        private logger: Logger,
     ) {}
     create = async (req: Request, res: Response, next: NextFunction) => {
         const result = validationResult(req)
@@ -54,6 +56,7 @@ export class ProductController {
         const newProduct = await this.productService.createProduct(
             product as unknown as Product,
         )
+        this.logger.info('Product created successfully', { id: newProduct._id })
 
         res.json({ id: newProduct._id })
     }
@@ -124,6 +127,8 @@ export class ProductController {
 
         await this.productService.updateProduct(productId, productToUpdate)
 
+        this.logger.info('Product updated successfully', { id: productId })
+
         res.json({ id: productId })
     }
 
@@ -162,6 +167,9 @@ export class ProductController {
                 image: this.storage.getObjectUrl(product.image),
             }),
         )
+
+        this.logger.info('Products fetched successfully')
+
         res.json({
             data: finalProducts,
             total: prodcuts.total,
@@ -177,12 +185,14 @@ export class ProductController {
         if (!product) {
             return next(createHttpError(404, 'Product not found'))
         }
+        this.logger.info('Product fetched successfully', { id: productId })
         res.json(product)
     }
 
     deleteProduct = async (req: Request, res: Response, next: NextFunction) => {
         const { productId } = req.params
         await this.productService.delete(productId)
+        this.logger.info('Product deleted successfully', { id: productId })
 
         res.json({ id: productId })
     }
