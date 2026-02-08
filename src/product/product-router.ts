@@ -51,4 +51,7 @@ router.put(
 
 router.get('/', asyncWrapper(productController.index))
 
+router.get('/:productId', asyncWrapper(productController.getById))
+router.delete('/:productId', asyncWrapper(productController.deleteProduct))
+
 export default router

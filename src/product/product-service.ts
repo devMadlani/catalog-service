@@ -67,4 +67,8 @@ export class ProductService {
 
         // return result as Product[]
     }
+
+    async delete(productId: string) {
+        return await productModel.findByIdAndDelete(productId)
+    }
 }

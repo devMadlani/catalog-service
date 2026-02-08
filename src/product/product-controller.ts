@@ -169,4 +169,21 @@ export class ProductController {
             currentPage: prodcuts.currentPage,
         })
     }
+
+    getById = async (req: Request, res: Response, next: NextFunction) => {
+        const { productId } = req.params
+        const product = await this.productService.getProductById(productId)
+
+        if (!product) {
+            return next(createHttpError(404, 'Product not found'))
+        }
+        res.json(product)
+    }
+
+    deleteProduct = async (req: Request, res: Response, next: NextFunction) => {
+        const { productId } = req.params
+        await this.productService.delete(productId)
+
+        res.json({ id: productId })
+    }
 }
